@@ -3,17 +3,17 @@ from GoogleOCR import GoogleOCR
 from ImageProcessor import ImageProcessor
 from LatexFormat import LatexFormat
 
-def convert(path):
-    go = GoogleOCR(path)
+def convert(path, api_key):
+    go = GoogleOCR(path, api_key)
     go.process_image()
     go.send_ocr_request()
-#    print "Status code: " + str(go.get_status_code()) + "\n"
+    print "Status code: " + str(go.get_status_code()).encode('utf-8').strip() + "\n"
     if go.get_status_code() == 200:
         go.parse_ocr_response()
         word_array = go.get_word_array()
- #       for i in xrange(0, len(word_array)):
-  #          print word_array[i].word + "\tArea: " + str(word_array[i].area) + "\tContrast: " + str(word_array[i].contrast)
-   #     print go.get_text()
+        for i in xrange(0, len(word_array)):
+            print word_array[i].word.encode('utf-8') + "\tArea: " + str(word_array[i].area).encode('utf-8') + "\tContrast: " + str(word_array[i].contrast).encode('utf-8')
+        print go.get_text().encode('utf-8')
         go.process_ocr_data()
         lines_array = go.get_lines_array()
 
@@ -37,14 +37,21 @@ def convert(path):
 
         # do the latex stuff here
         latex = LatexFormat(go.get_lines_array())
-        d = latex.createLatex()
-        d = d.replace('%', "")
-        d = d.replace('textbackslash{}', '')
-        f = open("textFile.txt", "w+")
-        f.write(d.encode('utf-8').strip())
-        f.close()
+        latex_output = latex.generate_latex()
+        latex_output = latex_output.replace('textbackslash{}', '').encode('utf-8').strip()
 
-        return base64.b64encode(d.encode('utf-8'))
+        # debug save
+        #f = open("textFile.txt", "w")
+        #f.write(latex_output)
+        #f.close()
+
+        return base64.b64encode(latex_output)
     else:
         print go.response.text
         return None
+
+if __name__ == "__main__":
+    api_key = ""
+    with open("config.json", "r") as f:
+        api_key = json.loads(f.read())["api_key"]
+    convert(raw_input("Enter path: "), api_key)

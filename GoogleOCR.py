@@ -19,9 +19,6 @@ class OCRLine:
         self.area = Coordinate.get_distance(self.c1, self.c2) * Coordinate.get_distance(self.c2, self.c3)
         self.line_center = float(self.c1.x + self.c2.x) / 2.0
 
-        #large medium small
-        self.type = "large"
-
     def compute_formatting(self, page_height, page_area, page_indent, page_spacing, line_spacing):
         self.is_centered_confidence = math.fabs((self.page_center - self.line_center) / self.page_center)
         self.is_centered = self.is_centered_confidence < 0.075
@@ -45,6 +42,7 @@ class OCRLine:
 
         self.is_end_paragraph_confidence = math.fabs((page_spacing - line_spacing) / page_spacing)
         self.is_end_paragraph = self.is_end_paragraph_confidence > 0.20
+        print "End paragraph conf: " + str(self.is_end_paragraph_confidence)
         print "end paragraph: " + str(self.is_end_paragraph)
 
         print "\n"
@@ -68,10 +66,10 @@ class OCRBlock:
 
 class GoogleOCR:
 
-    def __init__(self, path):
+    def __init__(self, path, api_key):
         self.path = path
         self.url = "https://vision.googleapis.com/v1/images:annotate"
-        self.api_key = "[REDACTED]"
+        self.api_key = api_key
         self.ip = ImageProcessor(path)
 
     def process_image(self):
@@ -80,6 +78,7 @@ class GoogleOCR:
         self.ip.enhance_image()
         self.ip.save_temp()
         self.encoded_img = self.ip.encode(self.ip.get_temp_path())
+        self.ip.delete_temp()
 
     def send_ocr_request(self):
         self.payload = json.loads("{\"requests\":[{\"image\":{\"content\":\"" + self.encoded_img + "\"},\"features\":[{\"type\":\"TEXT_DETECTION\"}]}]}")

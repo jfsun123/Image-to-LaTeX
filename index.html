@@ -1,0 +1,26 @@
+<head>
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/static/index.css">
+</head>
+
+<body>
+    <div style="text-align: center" class="test">Please Upload Your Picture Below</div>
+    <div style="text-align: center; color: gray" class="names">ConvertLatex.net developed by James Sun, Rohit Dhamankar, Vamsi Eyunni, Yong Chong  </div>
+    <div style="text-align: center; color: gray" class="hackdavis">HackDavis 2018 </div>
+    <div style = "width: 50%; height: 20%" class="logo">&nbsp;</div>
+    <div style = "width: 50%; height: 20%" class="spinner">&nbsp;</div>
+    <form method="POST" action="main.py">
+      <div class="file-upload">
+        <div style = "width: 50%" class="file-select">
+          <div class="file-select-button" id="fileName">Choose File</div>
+          <div class="file-select-name" id="noFile">No file chosen...</div>
+	      <input type="file" name="chooseFile" id="chooseFile">
+        </div>
+      </div>
+    </form>
+
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/jquery.particleground.min.js"></script>
+    <script type="text/javascript" src="/static/index.js"></script>
+</body>
