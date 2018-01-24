@@ -36,7 +36,10 @@ class ImageProcessor:
                 if im_matrix[r, c] < 128:
                     black += 1
 
-        return float(black) / float(im.height * im.width)
+        if im.height * im.width == 0:
+            return 0
+        else:
+            return float(black) / float(im.height * im.width)
 
     def resize(self):
         factor = 0
