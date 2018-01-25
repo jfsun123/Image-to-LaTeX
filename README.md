@@ -2,10 +2,12 @@
 
 Image to LaTeX code
 
-Current Website: 35.203.170.224
+Current Website: convertlatex.net
 
 This is a program which uses Google Cloud's Vision API to convert images into usable LaTeX code.
-The website is currently being run with tornado on Google's Cloud Compute Vision.
+The website is currently being run with tornado on Google's Cloud Compute Engine.
+
+Currently, it's unable to convert images with no text, or images that have equations in them.
 
 If something breaks, contact:
     James Sun: jfsun@ucdavis.edu
